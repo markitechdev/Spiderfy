@@ -92,7 +92,39 @@ const SpotifyAPI = {
     if (this.isDemoMode()) {
       return this.getMockRecentlyPlayed();
     }
-    return this.fetchWithAuth('https://api.spotify.com/v1/me/player/recently-played?limit=20');
+    const data = await this.fetchWithAuth('https://api.spotify.com/v1/me/player/recently-played?limit=50');
+    
+    // Deduplicate by track id
+    if (data && data.items) {
+      const seen = new Set();
+      const uniqueItems = [];
+      for (const item of data.items) {
+        const id = item.track?.id;
+        if (!id) continue;
+        if (!seen.has(id)) {
+          seen.add(id);
+          uniqueItems.push(item);
+        }
+      }
+      data.items = uniqueItems;
+    }
+    return data;
+  },
+
+  async getTrack(trackId) {
+    if (this.isDemoMode()) {
+      // Return a basic mock track structure for demo
+      return {
+        id: trackId,
+        name: 'Demo Track',
+        popularity: 85,
+        album: { release_date: '2023-01-01', name: 'Demo Album', images: [] },
+        artists: [{ name: 'Demo Artist' }],
+        external_urls: { spotify: '#' },
+        duration_ms: 180000
+      };
+    }
+    return this.fetchWithAuth(`https://api.spotify.com/v1/tracks/${trackId}`);
   },
 
   async getPlaylists() {

@@ -119,7 +119,7 @@ const UI = {
         recent.items.slice(0, 5).forEach((item) => {
           const track = item.track;
           recentHtml += `
-            <div class="glass-card hover-scale" style="min-width: 160px; padding: 12px; cursor: pointer; flex: 0 0 auto;" onclick="window.PlayerEngine.loadTrack('${track.id}', '${track.name.replace(/'/g, "\\'")}', '${track.artists.map(a => a.name).join(', ').replace(/'/g, "\\'")}', '${track.album?.images[0]?.url || ''}', '${track.preview_url || ''}')">
+            <div class="glass-card hover-scale" style="min-width: 180px; padding: 12px; cursor: pointer; flex: 0 0 auto;" onclick="window.UI.openTrackModal('${track.id}', '${track.name.replace(/'/g, "\\'")}', '${track.artists.map(a => a.name).join(', ').replace(/'/g, "\\'")}', '${track.album?.images[0]?.url || ''}', '${track.preview_url || ''}')">
               <img src="${track.album?.images[0]?.url}" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; margin-bottom: 12px;">
               <div style="font-weight: 600; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${track.name}</div>
               <div style="font-size: 0.75rem; color: var(--text-gray); margin-top: 4px;">${track.artists[0].name}</div>
@@ -133,7 +133,7 @@ const UI = {
       if (topTracks && topTracks.items) {
         topTracks.items.slice(0, 5).forEach((track) => {
           recHtml += `
-            <div class="glass-card hover-scale" style="min-width: 160px; padding: 12px; cursor: pointer; flex: 0 0 auto;" onclick="window.PlayerEngine.loadTrack('${track.id}', '${track.name.replace(/'/g, "\\'")}', '${track.artists.map(a => a.name).join(', ').replace(/'/g, "\\'")}', '${track.album?.images[0]?.url || ''}', '${track.preview_url || ''}')">
+            <div class="glass-card hover-scale" style="min-width: 180px; padding: 12px; cursor: pointer; flex: 0 0 auto;" onclick="window.UI.openTrackModal('${track.id}', '${track.name.replace(/'/g, "\\'")}', '${track.artists.map(a => a.name).join(', ').replace(/'/g, "\\'")}', '${track.album?.images[0]?.url || ''}', '${track.preview_url || ''}')">
               <img src="${track.album?.images[0]?.url}" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; margin-bottom: 12px; opacity: 0.8;">
               <div style="font-weight: 600; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${track.name}</div>
               <div style="font-size: 0.75rem; color: var(--text-gray); margin-top: 4px;">${track.artists[0].name}</div>
@@ -304,7 +304,7 @@ const UI = {
               <p style="font-size: 0.8rem; color: var(--text-gray); line-height: 1.4; margin-bottom: 16px;">Cinematic, immersive soundscapes. Late nights in another dimension.</p>
               <div style="display: flex; justify-content: space-between; align-items: center;">
                 <span style="font-size: 0.75rem; color: var(--text-dim);">${Math.floor(Math.random()*30 + 10)} tracks</span>
-                <button class="btn-outline" style="padding: 4px 12px; font-size: 0.75rem;" onclick="window.PlayerEngine.loadTrack('${t.id}', '${t.name.replace(/'/g, "\\'")}', '${t.artists.map(a => a.name).join(', ').replace(/'/g, "\\'")}', '${t.album?.images[0]?.url || ''}', '${t.preview_url || ''}')">Explore</button>
+                <button class="btn-outline" style="padding: 4px 12px; font-size: 0.75rem;" onclick="window.UI.openTrackModal('${t.id}', '${t.name.replace(/'/g, "\\'")}', '${t.artists.map(a => a.name).join(', ').replace(/'/g, "\\'")}', '${t.album?.images[0]?.url || ''}', '${t.preview_url || ''}')">Explore</button>
               </div>
             </div>
           `;
@@ -475,7 +475,7 @@ const UI = {
           const formattedDate = `${d.toLocaleString('default', { month: 'short' })} ${d.getDate()}, ${d.getFullYear()} • ${d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
           
           listHtml += `
-            <div class="hover-track" style="display: grid; grid-template-columns: 20px 3fr 2fr 1fr; gap: 16px; align-items: center; padding: 12px 16px; position: relative;">
+            <div class="hover-track" style="display: grid; grid-template-columns: 20px 3fr 2fr 1fr; gap: 16px; align-items: center; padding: 12px 16px; position: relative; cursor: pointer;" onclick="window.UI.openTrackModal('${t.id}', '${t.name.replace(/'/g, "\\'")}', '${t.artists.map(a => a.name).join(', ').replace(/'/g, "\\'")}', '${t.album?.images[0]?.url || ''}', '${t.preview_url || ''}')">
               <!-- Timeline Dot -->
               <div style="width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--spidey-red); background: var(--bg-dark); z-index: 2;"></div>
               
@@ -616,7 +616,7 @@ const UI = {
               <span style="font-size: 0.75rem; color: var(--spidey-red); font-weight: bold; letter-spacing: 1px;">TOP RESULT</span>
               <h2 style="font-size: 2rem; font-weight: 700; margin: 4px 0 8px 0;">${top.name}</h2>
               <p style="color: var(--text-gray); font-size: 1rem; margin-bottom: 16px;">${top.artists.map(a=>a.name).join(', ')}</p>
-              <button class="play-btn-circle" style="width: 48px; height: 48px; background: var(--spidey-red); color: white;" onclick="window.PlayerEngine.loadTrack('${top.id}', '${top.name.replace(/'/g, "\\'")}', '${top.artists.map(a => a.name).join(', ').replace(/'/g, "\\'")}', '${top.album?.images[0]?.url || ''}', '${top.preview_url || ''}')">
+              <button class="play-btn-circle" style="width: 48px; height: 48px; background: var(--spidey-red); color: white;" onclick="window.UI.openTrackModal('${top.id}', '${top.name.replace(/'/g, "\\'")}', '${top.artists.map(a => a.name).join(', ').replace(/'/g, "\\'")}', '${top.album?.images[0]?.url || ''}', '${top.preview_url || ''}')">
                 <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: white;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
               </button>
             </div>
@@ -627,7 +627,7 @@ const UI = {
         html += `<h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 16px;">Tracks</h3><div style="margin-bottom: 40px;">`;
         data.tracks.items.slice(1, 5).forEach(t => {
           html += `
-            <div class="hover-track" style="display: grid; grid-template-columns: 3fr 2fr 1fr; gap: 16px; align-items: center; padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.03); cursor: pointer;" onclick="window.PlayerEngine.loadTrack('${t.id}', '${t.name.replace(/'/g, "\\'")}', '${t.artists.map(a => a.name).join(', ').replace(/'/g, "\\'")}', '${t.album?.images[0]?.url || ''}', '${t.preview_url || ''}')">
+            <div class="hover-track" style="display: grid; grid-template-columns: 3fr 2fr 1fr; gap: 16px; align-items: center; padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.03); cursor: pointer;" onclick="window.UI.openTrackModal('${t.id}', '${t.name.replace(/'/g, "\\'")}', '${t.artists.map(a => a.name).join(', ').replace(/'/g, "\\'")}', '${t.album?.images[0]?.url || ''}', '${t.preview_url || ''}')">
               <div style="display: flex; gap: 16px; align-items: center;">
                 <img src="${t.album?.images[0]?.url}" style="width: 40px; height: 40px; border-radius: 4px; object-fit: cover;">
                 <div style="overflow: hidden;">
@@ -876,6 +876,76 @@ const UI = {
         </div>
       </div>
     `;
+  },
+
+  async openTrackModal(id, name, artist, imgUrl, previewUrl) {
+    const container = document.getElementById('track-modal-container');
+    if (!container) return;
+    
+    // Initial Render with basic info
+    container.innerHTML = `
+      <div id="track-modal-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 10000; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
+        <div class="glass-card page-transition-enter" style="width: 90%; max-width: 500px; padding: 32px; position: relative; border: 1px solid rgba(255,255,255,0.1);">
+          <button onclick="document.getElementById('track-modal-overlay').style.opacity='0'; setTimeout(()=>document.getElementById('track-modal-container').innerHTML='', 300);" style="position: absolute; top: 16px; right: 16px; background: transparent; border: none; color: white; cursor: pointer;">
+            <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 2;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+          
+          <div style="display: flex; gap: 24px; margin-bottom: 24px;">
+            <img src="${imgUrl || 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=150&auto=format&fit=crop&q=80'}" style="width: 120px; height: 120px; border-radius: 8px; object-fit: cover; box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
+            <div style="display: flex; flex-direction: column; justify-content: center;">
+              <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 8px;">${name}</h2>
+              <p style="color: var(--text-gray); font-size: 1rem; margin-bottom: 8px;">${artist}</p>
+              <div id="track-modal-extra" style="font-size: 0.8rem; color: var(--text-dim);">
+                Loading details...
+              </div>
+            </div>
+          </div>
+          
+          <div style="display: flex; gap: 12px; margin-bottom: 24px;">
+            <button class="btn-primary" style="flex: 1;" onclick="window.PlayerEngine.loadTrack('${id}', '${name.replace(/'/g, "\\'")}', '${artist.replace(/'/g, "\\'")}', '${imgUrl}', '${previewUrl || ''}'); document.getElementById('track-modal-overlay').style.opacity='0'; setTimeout(()=>document.getElementById('track-modal-container').innerHTML='', 300);">
+              <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor; display: inline-block; vertical-align: middle; margin-right: 4px;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Play
+            </button>
+            <button class="btn-outline" style="flex: 1;" onclick="window.open('https://open.spotify.com/track/${id}', '_blank')">
+              Open in Spotify
+            </button>
+          </div>
+          
+          <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 16px;">
+            <button class="btn-outline" style="width: 100%;" onclick="document.getElementById('lyrics-panel').style.display='block'; this.style.display='none';">Show Lyrics</button>
+            <div id="lyrics-panel" style="display: none; background: rgba(0,0,0,0.3); border-radius: 8px; padding: 16px; margin-top: 12px; text-align: center;">
+              <p style="color: var(--text-gray); font-size: 0.9rem; margin-bottom: 12px;">Lyrics are not available from Spotify directly.</p>
+              <button class="btn-outline" style="font-size: 0.8rem; padding: 6px 16px;" onclick="window.open('https://open.spotify.com/track/${id}', '_blank')">Open lyrics on Spotify</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    // Trigger fade in
+    setTimeout(() => {
+      const overlay = document.getElementById('track-modal-overlay');
+      if (overlay) overlay.style.opacity = '1';
+    }, 10);
+    
+    // Fetch extra details
+    try {
+      const trackData = await window.SpotifyAPI.getTrack(id);
+      const extraDiv = document.getElementById('track-modal-extra');
+      if (extraDiv && trackData) {
+        const releaseDate = trackData.album?.release_date || '';
+        const popularity = trackData.popularity || 0;
+        const duration = trackData.duration_ms ? ${"`${Math.floor(trackData.duration_ms/60000)}:${String(Math.floor((trackData.duration_ms%60000)/1000)).padStart(2, '0')}`"} : '';
+        extraDiv.innerHTML = `
+          <div>Duration: ${"${duration}"}</div>
+          ${"${releaseDate ? `<div>Released: ${releaseDate}</div>` : ''}"}
+          <div>Popularity: ${"${popularity}"}/100</div>
+        `;
+      }
+    } catch(e) {
+      console.warn('Failed to fetch extra track details', e);
+      const extraDiv = document.getElementById('track-modal-extra');
+      if (extraDiv) extraDiv.innerHTML = '';
+    }
   }
 };
 

@@ -15,6 +15,7 @@ const CONFIG = {
     'playlist-read-collaborative',
     'user-read-playback-state',
     'user-modify-playback-state',
+    'user-library-read',
     'streaming' // Needed for Web Playback SDK
   ],
 

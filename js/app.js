@@ -30,6 +30,7 @@ const PlayerEngine = {
         console.log('Ready with Device ID', device_id);
         this.deviceId = device_id;
         this.isPremium = true;
+        this.startSpotifyProgressInterval();
       });
 
       this.spotifyPlayer.addListener('not_ready', ({ device_id }) => {
@@ -319,6 +320,36 @@ const PlayerEngine = {
     if (prCur) prCur.innerText = curStr;
     if (prTot) prTot.innerText = durStr;
     if (prFill) prFill.style.width = `${pct}%`;
+  },
+
+  startSpotifyProgressInterval() {
+    if (this.progressInterval) clearInterval(this.progressInterval);
+    this.progressInterval = setInterval(async () => {
+      if (!this.isPremium || !this.spotifyPlayer || !this.isPlaying) return;
+      const state = await this.spotifyPlayer.getCurrentState();
+      if (!state) return;
+      
+      const cur = state.position / 1000;
+      const dur = state.duration / 1000;
+      const pct = (cur / dur) * 100;
+      
+      const curStr = `${Math.floor(cur / 60)}:${String(Math.floor(cur % 60)).padStart(2, '0')}`;
+      const durStr = `${Math.floor(dur / 60)}:${String(Math.floor(dur % 60)).padStart(2, '0')}`;
+      
+      const currentText = document.getElementById('bottom-time-current');
+      const totalText = document.getElementById('bottom-time-total');
+      const progressFill = document.getElementById('bottom-progress-fill');
+      if (currentText) currentText.innerText = curStr;
+      if (totalText) totalText.innerText = durStr;
+      if (progressFill) progressFill.style.width = `${pct}%`;
+      
+      const prCur = document.getElementById('pr-time-current');
+      const prTot = document.getElementById('pr-time-total');
+      const prFill = document.getElementById('pr-progress-fill');
+      if (prCur) prCur.innerText = curStr;
+      if (prTot) prTot.innerText = durStr;
+      if (prFill) prFill.style.width = `${pct}%`;
+    }, 1000);
   },
 
   handleEnded() {

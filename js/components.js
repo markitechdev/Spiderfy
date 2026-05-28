@@ -225,8 +225,8 @@ const UI = {
               </div>
               <div>
                 <span style="font-size: 0.7rem; color: var(--electric-blue); font-weight: bold; letter-spacing: 1px;">NOW PLAYING</span>
-                <h4 style="font-size: 1.2rem; font-weight: 600; margin-top: 4px;" id="dash-np-title">${currentPlaying?.item?.name || 'Sunflower'}</h4>
-                <p style="font-size: 0.85rem; color: var(--text-gray);" id="dash-np-artist">${currentPlaying?.item?.artists?.map(a => a.name).join(', ') || 'Post Malone, Swae Lee'}</p>
+                <h4 style="font-size: 1.2rem; font-weight: 600; margin-top: 4px;" id="dash-np-title">${currentPlaying?.item?.name || 'Nothing Playing'}</h4>
+                <p style="font-size: 0.85rem; color: var(--text-gray);" id="dash-np-artist">${currentPlaying?.item?.artists?.map(a => a.name).join(', ') || 'Select a track to start listening'}</p>
               </div>
             </div>
             

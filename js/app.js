@@ -181,6 +181,14 @@ const PlayerEngine = {
     if (prArt) prArt.src = imgUrl || 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=500&auto=format&fit=crop&q=80';
     if (prTitle) prTitle.innerText = name;
     if (prArtist) prArtist.innerText = artist;
+
+    // Update Dashboard visualizer if active
+    const dashArt = document.getElementById('dash-np-art');
+    const dashTitle = document.getElementById('dash-np-title');
+    const dashArtist = document.getElementById('dash-np-artist');
+    if (dashArt) dashArt.src = imgUrl || 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=80&auto=format&fit=crop&q=80';
+    if (dashTitle) dashTitle.innerText = name;
+    if (dashArtist) dashArtist.innerText = artist;
   },
 
   playIndex(index) {

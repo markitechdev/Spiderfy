@@ -45,7 +45,17 @@ const SpotifyAPI = {
     }
 
     if (!response.ok) {
-      throw new Error(`Spotify API request failed with status: ${response.status}`);
+      let errorMsg = `Spotify API request failed with status: ${response.status}`;
+      try {
+        const errorData = await response.json();
+        console.error('Spotify API Error Details:', errorData);
+        if (errorData.error && errorData.error.message) {
+          errorMsg = `Spotify API Error (${response.status}): ${errorData.error.message}`;
+        }
+      } catch (e) {
+        // Ignore JSON parse errors
+      }
+      throw new Error(errorMsg);
     }
 
     // Handle 204 No Content (such as no active playback)
@@ -119,8 +129,7 @@ const SpotifyAPI = {
     const params = new URLSearchParams({
       q: query.trim(),
       type: "track,artist,album,playlist",
-      limit: "20",
-      market: "from_token"
+      limit: "20"
     });
     return this.fetchWithAuth(`https://api.spotify.com/v1/search?${params.toString()}`);
   },

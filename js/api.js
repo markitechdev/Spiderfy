@@ -111,12 +111,18 @@ const SpotifyAPI = {
     }
   },
 
-  // Spotify Search Tracks API integration
-  async searchTracks(query) {
+  // Spotify Search API integration
+  async searchAll(query) {
     if (this.isDemoMode()) {
       return this.getMockSearchTracks(query);
     }
-    return this.fetchWithAuth(`https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=track&limit=24`);
+    const params = new URLSearchParams({
+      q: query.trim(),
+      type: "track,artist,album,playlist",
+      limit: "20",
+      market: "from_token"
+    });
+    return this.fetchWithAuth(`https://api.spotify.com/v1/search?${params.toString()}`);
   },
 
   // iTunes Search API Fallback for 30-second audio previews

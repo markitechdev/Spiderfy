@@ -589,11 +589,11 @@ const UI = {
     const viewport = document.getElementById('search-results-viewport');
     if (!viewport) return;
 
-    if (!query) {
+    if (!query || !query.trim()) {
       viewport.innerHTML = `
         <div style="text-align: center; color: var(--text-dim); padding: 80px 20px;">
           <svg style="width: 48px; height: 48px; stroke: var(--text-dim); margin-bottom: 12px; opacity: 0.5;"><use href="#icon-search"></use></svg>
-          <p style="font-size: 1.1rem;">Search for any track, artist, or album...</p>
+          <p style="font-size: 1.1rem;">Search for any track, artist, album, or playlist...</p>
         </div>
       `;
       return;
@@ -602,7 +602,7 @@ const UI = {
     viewport.innerHTML = this.renderLoading();
 
     try {
-      const data = await window.SpotifyAPI.searchTracks(query);
+      const data = await window.SpotifyAPI.searchAll(query);
       
       let html = '';
       if (data && data.tracks && data.tracks.items && data.tracks.items.length > 0) {
@@ -641,6 +641,53 @@ const UI = {
           `;
         });
         html += `</div>`;
+        
+        // Artists Grid
+        if (data.artists && data.artists.items && data.artists.items.length > 0) {
+          html += `<h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 16px;">Artists</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px; margin-bottom: 40px;">`;
+          data.artists.items.slice(0, 5).forEach(a => {
+            html += `
+              <div class="glass-card" style="padding: 16px; text-align: center;">
+                <img src="${a.images && a.images.length > 0 ? a.images[0].url : 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=100&auto=format&fit=crop&q=80'}" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 12px; display: inline-block;">
+                <div style="font-weight: 600; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${a.name}</div>
+              </div>
+            `;
+          });
+          html += `</div>`;
+        }
+        
+        // Albums Grid
+        if (data.albums && data.albums.items && data.albums.items.length > 0) {
+          html += `<h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 16px;">Albums</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px; margin-bottom: 40px;">`;
+          data.albums.items.slice(0, 5).forEach(a => {
+            html += `
+              <div class="glass-card" style="padding: 16px;">
+                <img src="${a.images && a.images.length > 0 ? a.images[0].url : ''}" style="width: 100%; aspect-ratio: 1; border-radius: 8px; object-fit: cover; margin-bottom: 12px;">
+                <div style="font-weight: 600; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${a.name}</div>
+                <div style="font-size: 0.8rem; color: var(--text-gray);">${a.artists[0]?.name || ''}</div>
+              </div>
+            `;
+          });
+          html += `</div>`;
+        }
+        
+        // Playlists Grid
+        if (data.playlists && data.playlists.items && data.playlists.items.length > 0) {
+          html += `<h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 16px;">Playlists</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px; margin-bottom: 40px;">`;
+          data.playlists.items.slice(0, 5).forEach(p => {
+            html += `
+              <div class="glass-card" style="padding: 16px;">
+                <img src="${p.images && p.images.length > 0 ? p.images[0].url : ''}" style="width: 100%; aspect-ratio: 1; border-radius: 8px; object-fit: cover; margin-bottom: 12px;">
+                <div style="font-weight: 600; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${p.name}</div>
+                <div style="font-size: 0.8rem; color: var(--text-gray);">By ${p.owner?.display_name || 'Spotify'}</div>
+              </div>
+            `;
+          });
+          html += `</div>`;
+        }
 
       } else {
         html = `<p style="text-align: center; color: var(--text-gray); padding: 40px;">No results found.</p>`;

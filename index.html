@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spiderfy - Multiverse Web Player</title>
+  
+  <!-- CSS Theme & Animations -->
+  <link rel="stylesheet" href="/css/theme.css?v=3">
+  <link rel="stylesheet" href="/css/animations.css?v=3">
+</head>
+<body>
+
+  <!-- Reusable SVG Symbols -->
+  <svg style="display: none;">
+    <symbol id="icon-spider" viewBox="0 0 24 24">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+    </symbol>
+    <symbol id="icon-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+      <polyline points="9 22 9 12 15 12 15 22" />
+    </symbol>
+    <symbol id="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8" />
+      <line x1="21" y1="21" x2="16.65" y2="16.65" />
+    </symbol>
+    <symbol id="icon-library" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+    </symbol>
+    <symbol id="icon-playlist" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 18V5l12-2v13" />
+      <circle cx="6" cy="18" r="3" />
+      <circle cx="18" cy="16" r="3" />
+    </symbol>
+    <symbol id="icon-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <polyline points="12 6 12 12 16 14" />
+    </symbol>
+    <symbol id="icon-play-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <polygon points="10 8 16 12 10 16 10 8" />
+    </symbol>
+    <symbol id="icon-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="3" />
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+    </symbol>
+    <symbol id="icon-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+      <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+    </symbol>
+  </svg>
+
+  <div id="app-root" style="width: 100%;">
+    
+    <!-- Main AppShell Framework Layout -->
+    <div class="app-shell" id="main-layout" style="display: none;">
+      
+      <!-- Desktop Left Sidebar -->
+      <aside class="sidebar-nav" id="sidebar">
+        <div class="logo-container" style="margin-bottom: 36px; padding-left: 4px;">
+          <img src="images/logo.png" alt="Spiderfy" class="logo-img" style="height: 52px; max-width: 100%; object-fit: contain; filter: drop-shadow(0 0 10px rgba(255, 0, 85, 0.3)); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); cursor: pointer;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+        </div>
+
+        <nav class="nav-links">
+          <a class="nav-link active" data-page="dashboard" id="nav-dashboard">
+            <svg><use href="#icon-home"></use></svg>
+            Dashboard
+          </a>
+          <a class="nav-link" data-page="universes" id="nav-universes">
+            <svg><use href="#icon-library"></use></svg>
+            My Universes
+          </a>
+          <a class="nav-link" data-page="playlists" id="nav-playlists">
+            <svg><use href="#icon-playlist"></use></svg>
+            Playlist Galaxy
+          </a>
+          <a class="nav-link" data-page="recent" id="nav-recent">
+            <svg><use href="#icon-clock"></use></svg>
+            Recent Jump
+          </a>
+          <a class="nav-link" data-page="search" id="nav-search">
+            <svg><use href="#icon-search"></use></svg>
+            Search Dimensions
+          </a>
+          <a class="nav-link" data-page="player" id="nav-player">
+            <svg><use href="#icon-play-circle"></use></svg>
+            Player Room
+          </a>
+          <a class="nav-link" data-page="settings" id="nav-settings">
+            <svg><use href="#icon-settings"></use></svg>
+            Settings
+          </a>
+        </nav>
+
+        <!-- Player relocated to sidebar bottom -->
+        <div class="sidebar-player" id="sidebar-playback">
+          <div class="player-info-row">
+            <img class="player-album-art" id="bottom-album-art" src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=80&auto=format&fit=crop&q=80" alt="Album Cover">
+            <div class="player-track-info">
+              <span class="player-track-title" id="bottom-track-title">Sunflower</span>
+              <span class="player-track-artist" id="bottom-track-artist">Post Malone, Swae Lee</span>
+              <span class="playback-badge" id="bottom-fallback-status"></span>
+            </div>
+          </div>
+          
+          <div class="progress-bar-container">
+            <span class="time-stamp" id="bottom-time-current">0:00</span>
+            <div class="progress-slider-bg" id="bottom-progress-bar">
+              <div class="progress-slider-fill" id="bottom-progress-fill"></div>
+            </div>
+            <span class="time-stamp" id="bottom-time-total">0:30</span>
+          </div>
+
+          <div class="player-controls-row">
+            <button class="control-btn" onclick="window.PlayerEngine.playPrev()" title="Previous Track" aria-label="Previous Track">
+              <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5"></line></svg>
+            </button>
+            <button class="play-btn-circle" id="bottom-btn-play" onclick="window.PlayerEngine.togglePlay()" title="Play / Pause" aria-label="Play or Pause Track">
+              <svg viewBox="0 0 24 24" id="bottom-play-svg"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            </button>
+            <button class="control-btn" onclick="window.PlayerEngine.playNext()" title="Next Track" aria-label="Next Track">
+              <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Flexible Main Content Area -->
+      <main class="main-content">
+        
+        <!-- Top Sticky Header -->
+        <header class="top-header">
+          <div class="search-bar-container">
+            <svg class="search-icon"><use href="#icon-search"></use></svg>
+            <input type="text" id="global-search-input" placeholder="Search dimensions, tracks, artists..." autocomplete="off">
+          </div>
+          <div class="header-right">
+            <svg class="bell-icon"><use href="#icon-bell"></use></svg>
+            <div class="user-profile-badge" onclick="window.Router.navigate('settings')">
+              <img id="user-avatar-header" src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y" alt="User Avatar">
+              <div class="user-info">
+                <span class="user-name" id="user-display-name">Miles Morales</span>
+                <span class="user-role" id="user-dimension-status">Web Slinger</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Main Dynamic Viewport -->
+        <div class="content-viewport" id="content-viewport">
+          <!-- Render page elements dynamically -->
+        </div>
+      </main>
+
+      <!-- Hidden standard HTML5 audio node -->
+      <audio id="global-html5-audio" style="display: none;" ontimeupdate="window.PlayerEngine.handleTimeUpdate()" onended="window.PlayerEngine.handleEnded()"></audio>
+
+    </div>
+
+    <!-- Standalone Landing View Container -->
+    <div id="landing-view" style="display: none;"></div>
+
+  </div>
+
+  <!-- Spotify Web Playback SDK -->
+  <script src="https://sdk.scdn.co/spotify-player.js"></script>
+
+  <!-- JavaScript Modules -->
+  <script type="module" src="/config.js?v=2"></script>
+  <script type="module" src="/js/auth.js?v=2"></script>
+  <script type="module" src="/js/api.js?v=2"></script>
+  <script type="module" src="/js/universe-engine.js?v=2"></script>
+  <script type="module" src="/js/components.js?v=2"></script>
+  <script type="module" src="/js/app.js?v=2"></script>
+
+</body>
+</html>

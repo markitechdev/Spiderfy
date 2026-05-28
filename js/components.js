@@ -843,19 +843,7 @@ const UI = {
           <div class="glass-card">
             <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 24px;">Playback</h3>
             
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-              <div>
-                <div style="font-weight: 500; font-size: 0.95rem;">Demo Mode (Mock API)</div>
-                <div style="font-size: 0.75rem; color: var(--text-gray);">Run offline with preloaded reference data.</div>
-              </div>
-              <label style="position: relative; display: inline-block; width: 44px; height: 24px;">
-                <input type="checkbox" id="settings-demo-toggle" style="opacity: 0; width: 0; height: 0;" ${isDemo ? 'checked' : ''} onchange="localStorage.setItem('spidey_demo_mode', this.checked); window.location.reload();">
-                <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: ${isDemo ? 'var(--electric-blue)' : 'var(--text-dim)'}; transition: .3s; border-radius: 24px; display: block;">
-                  <span style="position: absolute; content: ''; height: 16px; width: 16px; left: ${isDemo ? '24px' : '4px'}; bottom: 4px; background-color: white; transition: .3s; border-radius: 50%; display: block;"></span>
-                </span>
-              </label>
-            </div>
-            
+
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
               <div>
                 <div style="font-weight: 500; font-size: 0.95rem;">Autoplay</div>

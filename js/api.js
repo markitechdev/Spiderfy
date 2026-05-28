@@ -3,6 +3,7 @@
 const SpotifyAPI = {
   // Checks if the client is currently running in offline Demo Mode
   isDemoMode() {
+    if (window.Auth.getAccessToken()) return false;
     return localStorage.getItem('spidey_demo_mode') === 'true';
   },
 
@@ -220,7 +221,7 @@ const SpotifyAPI = {
           id: 't1',
           name: 'Sunflower',
           duration_ms: 158000,
-          preview_url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', // Free audio sample for mockup
+          preview_url: '', // Free audio sample for mockup
           album: {
             name: 'Spider-Man: Into the Spider-Verse',
             images: [{ url: 'https://images.unsplash.com/photo-1608889175123-8ec330b86f84?w=300&auto=format&fit=crop&q=80' }]
@@ -232,7 +233,7 @@ const SpotifyAPI = {
           id: 't2',
           name: "What's Up Danger",
           duration_ms: 182000,
-          preview_url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+          preview_url: '',
           album: {
             name: 'Spider-Man: Into the Spider-Verse',
             images: [{ url: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=300&auto=format&fit=crop&q=80' }]
@@ -244,7 +245,7 @@ const SpotifyAPI = {
           id: 't3',
           name: 'Am I Dreaming',
           duration_ms: 213000,
-          preview_url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
+          preview_url: '',
           album: {
             name: 'Spider-Man: Across the Spider-Verse',
             images: [{ url: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=300&auto=format&fit=crop&q=80' }]
@@ -256,7 +257,7 @@ const SpotifyAPI = {
           id: 't4',
           name: 'Hummingbird',
           duration_ms: 180000,
-          preview_url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3',
+          preview_url: '',
           album: {
             name: 'Spider-Man: Across the Spider-Verse',
             images: [{ url: 'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=300&auto=format&fit=crop&q=80' }]
@@ -268,7 +269,7 @@ const SpotifyAPI = {
           id: 't5',
           name: 'Harder, Better, Faster, Stronger',
           duration_ms: 224000,
-          preview_url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3',
+          preview_url: '',
           album: {
             name: 'Discovery',
             images: [{ url: 'https://images.unsplash.com/photo-1483412033650-1015ddeb83d1?w=300&auto=format&fit=crop&q=80' }]
@@ -280,7 +281,7 @@ const SpotifyAPI = {
           id: 't6',
           name: 'Do I Wanna Know?',
           duration_ms: 272000,
-          preview_url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3',
+          preview_url: '',
           album: {
             name: 'AM',
             images: [{ url: 'https://images.unsplash.com/photo-1487180142328-0c4e37023af5?w=300&auto=format&fit=crop&q=80' }]
@@ -292,7 +293,7 @@ const SpotifyAPI = {
           id: 't7',
           name: 'Kill Bill',
           duration_ms: 153000,
-          preview_url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3',
+          preview_url: '',
           album: {
             name: 'SOS',
             images: [{ url: 'https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=300&auto=format&fit=crop&q=80' }]

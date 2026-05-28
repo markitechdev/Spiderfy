@@ -104,11 +104,12 @@ const UI = {
   async renderHome(viewport) {
     viewport.innerHTML = this.renderLoading();
     try {
-      const [topTracks, topArtists, recent, currentPlaying] = await Promise.all([
+      const [topTracks, topArtists, recent, currentPlaying, playlists] = await Promise.all([
         window.SpotifyAPI.getTopTracks(),
         window.SpotifyAPI.getTopArtists(),
         window.SpotifyAPI.getRecentlyPlayed(),
-        window.SpotifyAPI.getCurrentlyPlaying()
+        window.SpotifyAPI.getCurrentlyPlaying(),
+        window.SpotifyAPI.getPlaylists()
       ]);
 
       const name = document.getElementById('user-display-name')?.innerText || 'Miles Morales';
@@ -154,6 +155,13 @@ const UI = {
           `;
         });
       }
+
+      const featuredPlaylist = playlists?.items?.[0];
+      const featName = featuredPlaylist?.name || 'Your Liked Songs';
+      const featDesc = featuredPlaylist?.description || 'Your favorite tracks curated just for you across dimensions.';
+      const featImg = featuredPlaylist?.images?.[0]?.url || 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=140&auto=format&fit=crop&q=80';
+      const featTracks = featuredPlaylist?.tracks?.total || 0;
+      const featId = featuredPlaylist?.id || '';
 
       viewport.innerHTML = `
         <div class="page-container page-transition-enter">
@@ -202,17 +210,17 @@ const UI = {
             <div class="glass-card" style="padding: 24px; display: flex; gap: 20px; align-items: center; background: radial-gradient(circle at 0% 0%, rgba(0, 204, 255, 0.1) 0%, transparent 70%);">
               <div style="flex-grow: 1;">
                 <span style="font-size: 0.75rem; color: var(--electric-blue); font-weight: bold; letter-spacing: 1px;">FEATURED PLAYLIST</span>
-                <h3 style="font-size: 1.5rem; font-weight: 700; margin: 8px 0 12px 0;">Brooklyn Street Pulse</h3>
-                <p style="color: var(--text-gray); font-size: 0.85rem; line-height: 1.4; margin-bottom: 16px;">Booming 808s, rapid-fire flows, and street anthems that power your web-lines.</p>
+                <h3 style="font-size: 1.5rem; font-weight: 700; margin: 8px 0 12px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 250px;">${featName}</h3>
+                <p style="color: var(--text-gray); font-size: 0.85rem; line-height: 1.4; margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${featDesc}</p>
                 <div style="display: flex; gap: 12px; align-items: center;">
-                  <button class="btn-primary" onclick="window.Router.navigate('playlists')">
+                  <button class="btn-primary" onclick="${featId ? `window.UI.renderPlaylistDetail('${featId}')` : `window.Router.navigate('playlists')`}">
                     <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                    Play Now
+                    Explore
                   </button>
-                  <span style="font-size: 0.75rem; color: var(--text-dim);">24 tracks • 1h 26m</span>
+                  <span style="font-size: 0.75rem; color: var(--text-dim);">${featTracks} tracks</span>
                 </div>
               </div>
-              <img src="/images/brooklyn_street_pulse.png" style="width: 140px; height: 140px; border-radius: 8px; object-fit: cover; box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
+              <img src="${featImg}" style="width: 140px; height: 140px; border-radius: 8px; object-fit: cover; box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
             </div>
           </div>
 
@@ -701,11 +709,10 @@ const UI = {
 
   // 6. PLAYER ROOM
   async renderPlayerRoom(viewport) {
-    // Check if something is playing
-    const audio = document.getElementById('global-html5-audio');
-    const isPlaying = audio && audio.src && audio.src !== '';
+    // Check if something is loaded in the global player
+    const bTitle = document.getElementById('bottom-track-title')?.innerText;
     
-    if (!isPlaying) {
+    if (!bTitle || bTitle === 'No track playing' || bTitle === 'No Track Loaded') {
       viewport.innerHTML = `
         <div class="page-container page-transition-enter" style="text-align: center; padding: 100px;">
           <h2 style="font-size: 2rem; margin-bottom: 16px;">Player Room</h2>

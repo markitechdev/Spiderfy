@@ -88,9 +88,19 @@ const PlayerEngine = {
     }
 
     if (this.isPremium && this.deviceId) {
-      // Play via Spotify Connect API on our Web Playback SDK device
+      // Transfer playback to this Web Player device first
       try {
         const token = window.Auth.getAccessToken();
+        await fetch('https://api.spotify.com/v1/me/player', {
+          method: 'PUT',
+          body: JSON.stringify({ device_ids: [this.deviceId], play: false }),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+        });
+
+        // Play via Spotify Connect API on our Web Playback SDK device
         const res = await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${this.deviceId}`, {
           method: 'PUT',
           body: JSON.stringify({ uris: [`spotify:track:${id}`] }),
@@ -104,7 +114,7 @@ const PlayerEngine = {
           throw new Error('Premium playback failed');
         }
       } catch (e) {
-        console.warn(e);
+        console.warn('Playback error:', e);
         this.fallbackToPreview(id, name, artist, imgUrl, previewUrl);
       }
     } else {
@@ -120,7 +130,16 @@ const PlayerEngine = {
     
     let activePreview = previewUrl;
 
-    if (!previewUrl || previewUrl === 'null' || previewUrl === 'undefined') {
+    // Spotify often omits preview_url, so fallback to iTunes
+    if (!activePreview || activePreview === 'null' || activePreview === 'undefined') {
+      try {
+        activePreview = await window.SpotifyAPI.fetchiTunesPreview(name, artist);
+      } catch (e) {
+        console.warn('iTunes fallback failed', e);
+      }
+    }
+
+    if (!activePreview || activePreview === 'null' || activePreview === 'undefined') {
       if (fallbackStatusEl) fallbackStatusEl.innerText = 'Spotify Premium is required for full in-app playback.';
       
       // We can also let the user open it in Spotify

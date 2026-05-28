@@ -68,6 +68,10 @@ const UI = {
             <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; stroke: currentColor; fill: none;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             Secure connection via OAuth 2.0
           </div>
+          
+          <button onclick="localStorage.setItem('spidey_demo_mode', 'true'); window.location.reload();" style="margin-top: 24px; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--text-gray); padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; transition: 0.2s;" onmouseover="this.style.color='white'; this.style.borderColor='white'" onmouseout="this.style.color='var(--text-gray)'; this.style.borderColor='rgba(255,255,255,0.2)'">
+            Skip to Offline Demo Mode
+          </button>
         </div>
       </div>
     `;
@@ -807,12 +811,19 @@ const UI = {
             </div>
           </div>
 
-          <!-- Logout Button -->
+          <!-- Login/Logout Button -->
           <div class="glass-card" style="grid-column: span 2; display: flex; justify-content: flex-end; background: transparent; border: none; padding: 0;">
-            <button class="btn-outline" style="border-color: var(--spidey-red); color: var(--spidey-red);" onclick="window.Auth.logout()">
-              <svg viewBox="0 0 24 24" style="width:16px; height:16px; stroke:currentColor; fill:none; display:inline-block; vertical-align:middle; margin-right:6px;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-              Sign Out
-            </button>
+            ${!window.Auth.getAccessToken() ? `
+              <button class="btn-primary" style="background: var(--spidey-red); color: white;" onclick="window.Auth.login()">
+                <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:currentColor; display:inline-block; vertical-align:middle; margin-right:6px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                Connect with Spotify
+              </button>
+            ` : `
+              <button class="btn-outline" style="border-color: var(--spidey-red); color: var(--spidey-red);" onclick="window.Auth.logout()">
+                <svg viewBox="0 0 24 24" style="width:16px; height:16px; stroke:currentColor; fill:none; display:inline-block; vertical-align:middle; margin-right:6px;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                Sign Out
+              </button>
+            `}
           </div>
 
         </div>

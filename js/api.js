@@ -3,7 +3,7 @@
 const SpotifyAPI = {
   // Checks if the client is currently running in offline Demo Mode
   isDemoMode() {
-    return localStorage.getItem('spidey_demo_mode') === 'true' || !window.Auth.getAccessToken();
+    return localStorage.getItem('spidey_demo_mode') === 'true';
   },
 
   // Perform standard fetch request with authorization token and automatic token refresh
